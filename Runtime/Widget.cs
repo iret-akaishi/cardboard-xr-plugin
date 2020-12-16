@@ -74,7 +74,11 @@ namespace Google.XR.Cardboard
         {
             get
             {
+#if VIEW_CUSTOMIZE
+                RectInt rect = CloseButtonRect;
+#else
                 RectInt rect = TranslateToSafeAreaFrame(CloseButtonRect);
+#endif
                 int paddingPixels = DpToPixels(_buttonPaddingDp);
                 rect.xMin += paddingPixels;
                 rect.xMax -= paddingPixels;
@@ -110,7 +114,11 @@ namespace Google.XR.Cardboard
         {
             get
             {
+#if VIEW_CUSTOMIZE
+                RectInt rect = GearButtonRect;
+#else
                 RectInt rect = TranslateToSafeAreaFrame(GearButtonRect);
+#endif
                 int paddingPixels = DpToPixels(_buttonPaddingDp);
                 rect.xMin += paddingPixels;
                 rect.xMax -= paddingPixels;
@@ -129,8 +137,13 @@ namespace Google.XR.Cardboard
             {
                 RectInt rect = new RectInt();
                 int widthPixels = DpToPixels(_alignmentWidthDp);
+#if VIEW_CUSTOMIZE
+                rect.xMin = ((int)Screen.width - widthPixels) / 2;
+                rect.xMax = ((int)Screen.width + widthPixels) / 2;
+#else
                 rect.xMin = ((int)Screen.safeArea.width - widthPixels) / 2;
                 rect.xMax = ((int)Screen.safeArea.width + widthPixels) / 2;
+#endif
                 rect.y = 0;
                 rect.height = MmToPixels(_alignmentHeightMm);
                 return rect;
@@ -164,8 +177,10 @@ namespace Google.XR.Cardboard
         private static RectInt TranslateToSafeAreaFrame(RectInt rect)
         {
             RectInt result = rect;
+#if !VIEW_CUSTOMIZE
             result.x -= (int)Screen.safeArea.xMin;
             result.y -= (int)Screen.safeArea.yMin;
+#endif
             return result;
         }
     }

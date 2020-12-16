@@ -137,11 +137,15 @@ namespace Google.XR.Cardboard
         /// </param>
         internal static void RecalculateRectangles(Rect renderingArea)
         {
+#if VIEW_CUSTOMIZE
+            CardboardUnity_setScreenParams(0, 0, Screen.width, Screen.height);
+#else
             // TODO(b/171702321): Remove this method once the safe area size could be properly
             // fetched by the XRLoader.
             CardboardUnity_setScreenParams(
                     (int)renderingArea.x, (int)renderingArea.y, (int)renderingArea.width,
                     (int)renderingArea.height);
+#endif
 
             RectInt closeRect = Widget.CloseButtonRenderRect;
             RectInt gearRect = Widget.GearButtonRenderRect;
